@@ -19,8 +19,8 @@ const ADDRESS = /^0x[0-9a-fA-F]{40}$/
 /** Dialog: name the group and list the first members. */
 export const newGroupDialog = (onCreated) => {
   const dialog = el('dialog')
-  const name = el('input', 'field mt-3', { placeholder: 'Group name', dataset: { testid: 'group-name' }, autocomplete: 'off' })
-  const members = el('textarea', 'field rounded-lg h-24 py-2 mt-2 resize-none', {
+  const name = el('input', 'input-box mt-3', { placeholder: 'Group name', dataset: { testid: 'group-name' }, autocomplete: 'off' })
+  const members = el('textarea', 'input-box rounded-lg h-24 py-2 mt-2 resize-none', {
     placeholder: 'Member addresses, one per line', dataset: { testid: 'group-members' },
   })
   const actions = el('div', 'flex gap-2 justify-end mt-5')
@@ -98,7 +98,7 @@ export const renderGroupDetails = async (root, group, handlers) => {
 
   const invite = el('section', 'space-y-2')
   const inviteRow = el('div', 'flex gap-2')
-  const inviteInput = el('input', 'field', { placeholder: '0x…', dataset: { testid: 'invite-address' }, autocomplete: 'off' })
+  const inviteInput = el('input', 'input-box', { placeholder: '0x…', dataset: { testid: 'invite-address' }, autocomplete: 'off' })
   const inviteButton = el('button', 'btn-primary flex-shrink-0', {
     textContent: 'Add', dataset: { testid: 'invite-add' },
     onclick: async () => {

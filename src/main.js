@@ -133,7 +133,7 @@ const showSettings = () => {
 
 const newChatDialog = () => {
   const dialog = el('dialog')
-  const input = el('input', 'field mt-3', { placeholder: '0x…', dataset: { testid: 'peer-address' }, autocomplete: 'off' })
+  const input = el('input', 'input-box mt-3', { placeholder: '0x…', dataset: { testid: 'peer-address' }, autocomplete: 'off' })
   const mine = el('button', 'text-xs mono text-accent mt-2 block', {
     textContent: `Copy my address · ${shortAddress(session.address)}`,
     onclick: async () => { await navigator.clipboard.writeText(session.address).catch(() => {}); toast('Address copied', 'ok') },

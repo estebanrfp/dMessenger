@@ -28,24 +28,24 @@ await admin.p.getByTestId('name-input').fill('Esteban'); await admin.p.getByTest
 await bob.p.getByTestId('open-profile').click()
 await bob.p.getByTestId('name-input').fill('Bob'); await bob.p.getByTestId('name-save').click()
 await admin.p.getByTestId('new-group').click()
-await admin.p.getByTestId('group-name').fill('Núcleo GenosDB')
+await admin.p.getByTestId('group-name').fill('GenosDB core team')
 await admin.p.getByTestId('group-members').fill(`${bob.address}\n${carol.address}`)
 await admin.p.getByTestId('create-group').click()
 await admin.p.getByTestId('group-row').waitFor({ timeout: 30000 }); await admin.p.getByTestId('group-row').click()
 await admin.p.getByTestId('composer').waitFor()
 await admin.p.getByTestId('chat-menu').click(); await admin.p.getByTestId('menu-disappearing').click()
 await admin.p.getByTestId('ttl-option').filter({ hasText: '1 day' }).click()
-for (const t of ['identidad visual propia, tomada de la guía de diseño de GenosDB', 'un grafo, cero servidores, y la constitución la aplica cada peer']) {
+for (const t of ['one graph, no servers — and the constitution enforced by every peer', 'a message is a node you own; a key is an envelope only members can open']) {
   await admin.p.getByTestId('composer').fill(t); await admin.p.getByTestId('send').click(); await admin.p.waitForTimeout(600)
 }
 const wait = async (m) => { await m.p.getByTestId('group-row').click(); const t0 = Date.now(); while (Date.now() - t0 < 60000) { if (await m.p.getByTestId('composer').isEnabled().catch(() => false) && await m.p.getByTestId('message').count() >= 2) break; await m.p.waitForTimeout(500) } }
 await wait(bob); await wait(carol)
-await bob.p.getByTestId('composer').fill('y las reacciones van firmadas por quien reacciona'); await bob.p.getByTestId('send').click()
+await bob.p.getByTestId('composer').fill('reactions are signed by whoever reacts, nobody can react in your name'); await bob.p.getByTestId('send').click()
 const first = bob.p.getByTestId('message').first(); await first.hover(); await first.getByTestId('react-action').click()
 await bob.p.getByTestId('quick-emoji').filter({ hasText: '🔥' }).click()
 await carol.p.getByTestId('message').nth(2).waitFor({ timeout: 60000 })
 const reply = carol.p.getByTestId('message').nth(1); await reply.hover(); await reply.getByTestId('reply-action').click()
-await carol.p.getByTestId('composer').fill('nada que un servidor pueda decidir'); await carol.p.getByTestId('send').click()
+await carol.p.getByTestId('composer').fill('nothing here is decided by a server'); await carol.p.getByTestId('send').click()
 await admin.p.getByTestId('message').nth(3).waitFor({ timeout: 60000 }); await admin.p.waitForTimeout(1200)
 await admin.p.screenshot({ path: 'tests/__screens/new-chat-dark.png' })
 await carol.p.waitForTimeout(800); await carol.p.screenshot({ path: 'tests/__screens/new-chat-light.png' })

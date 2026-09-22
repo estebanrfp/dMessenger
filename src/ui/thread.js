@@ -210,7 +210,7 @@ export const renderThread = async (root, space, handlers) => {
     type: 'button', title: 'Record a voice note', dataset: { testid: 'record' }, disabled: !readable || !navigator.mediaDevices?.getUserMedia,
   })
   mic.append(el('span', 'i-carbon-microphone text-xl'))
-  const input = el('input', 'field', {
+  const input = el('input', 'input-box', {
     type: 'text', placeholder: readable ? 'Message' : 'Waiting for the key…', autocomplete: 'off',
     dataset: { testid: 'composer' }, disabled: !readable,
   })

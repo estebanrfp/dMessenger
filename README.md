@@ -1,6 +1,12 @@
 # dMessenger
 
-**Live: [estebanrfp.github.io/dMessenger](https://estebanrfp.github.io/dMessenger/)** — open it in two browsers, or on two devices, and paste one address into the other's *New chat*.
+[![Live demo](https://img.shields.io/badge/live%20demo-estebanrfp.github.io%2FdMessenger-605ceb)](https://estebanrfp.github.io/dMessenger/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f)](LICENSE)
+[![Built on GenosDB](https://img.shields.io/badge/built%20on-GenosDB-4c8dff)](https://github.com/estebanrfp/gdb)
+
+[![dMessenger — a group conversation with names, a reply, a reaction and a message lifetime](docs/screenshot-dark.png)](https://estebanrfp.github.io/dMessenger/)
+
+**Try it: [estebanrfp.github.io/dMessenger](https://estebanrfp.github.io/dMessenger/)** — open it in two browsers, or on two devices, and paste one address into the other's *New chat*. Light theme in [docs/screenshot-light.png](docs/screenshot-light.png).
 
 A private messenger that runs entirely between its users: **one GenosDB graph**, no relays holding messages, no server anywhere in the data path, and a constitution every peer enforces on its own copy.
 

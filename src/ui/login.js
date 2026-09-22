@@ -26,7 +26,7 @@ export const renderLogin = (root) => {
   const form = el('div', 'space-y-4')
 
   const nameField = el('div')
-  const nameInput = el('input', 'field', { id: 'displayName', type: 'text', placeholder: 'Name', autocomplete: 'nickname' })
+  const nameInput = el('input', 'input-box', { id: 'displayName', type: 'text', placeholder: 'Name', autocomplete: 'nickname' })
   nameField.append(
     el('label', 'block text-sm text-dim mb-1', { htmlFor: 'displayName', textContent: 'Your name (optional)' }),
     nameInput,
@@ -71,7 +71,7 @@ export const renderLogin = (root) => {
   passkey.append(el('span', 'i-carbon-fingerprint-recognition'), document.createTextNode('Sign in with passkey'))
 
   const recoverBox = el('div', 'space-y-2 hidden')
-  const phrase = el('textarea', 'field rounded-lg h-20 py-2 resize-none', {
+  const phrase = el('textarea', 'input-box rounded-lg h-20 py-2 resize-none', {
     placeholder: 'twelve words, separated by spaces', dataset: { testid: 'mnemonic' },
   })
   const confirm = el('button', 'btn-secondary w-full', {

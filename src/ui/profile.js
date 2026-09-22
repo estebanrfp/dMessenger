@@ -56,7 +56,7 @@ export const renderProfile = async (root, address, handlers) => {
 
   if (mine) {
     const form = el('form', 'mt-4 flex gap-2')
-    const input = el('input', 'field', { placeholder: 'Your name', maxLength: 48, dataset: { testid: 'name-input' }, value: nameOf(address) ?? '' })
+    const input = el('input', 'input-box', { placeholder: 'Your name', maxLength: 48, dataset: { testid: 'name-input' }, value: nameOf(address) ?? '' })
     const save = el('button', 'btn-primary flex-shrink-0', { type: 'submit', textContent: 'Save', dataset: { testid: 'name-save' } })
     form.append(input, save)
     form.addEventListener('submit', async (event) => {

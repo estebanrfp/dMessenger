@@ -102,7 +102,10 @@ export const renderSettings = (root, handlers) => {
 
   // ── about ──
   const about = section('About dMessenger')
+  const link = (href, text) => el('a', 'text-sm text-accent hover:underline', { href, target: '_blank', rel: 'noopener', textContent: text })
   about.append(
+    row('Live demo', link('https://estebanrfp.github.io/dMessenger/', 'estebanrfp.github.io/dMessenger'), 'This app, published on GitHub Pages'),
+    row('Source', link('https://github.com/estebanrfp/dMessenger', 'github.com/estebanrfp/dMessenger'), 'MIT — the engine carries its own license'),
     row('Room', el('span', 'text-sm mono truncate max-w-[12rem]', { textContent: ROOM }), 'Everyone opening this name replicates the graph'),
     row('Constitution', el('span', 'text-sm mono', { textContent: SUPERADMINS.map(shortAddress).join(', ') }), 'Identical on every peer'),
     row('Engine', el('span', 'text-sm mono', { textContent: `genosdb ${ENGINE_VERSION}` }), 'Pinned on the CDN'),

@@ -53,7 +53,7 @@ export default defineConfig({
     'btn-secondary': 'btn bg-field hover:bg-raised border-line text-ink',
     'btn-ghost': 'btn bg-card hover:bg-field border-line text-dim hover:text-ink',
     'btn-danger': 'btn bg-danger hover:opacity-90 text-on-accent',
-    'field': 'w-full px-4 py-2 rounded-full bg-field b-1 b-solid b-line focus:b-accent outline-none text-ink placeholder:text-faint',
+    'input-box': 'w-full px-4 py-2 rounded-full bg-field b-1 b-solid b-line focus:b-accent outline-none text-ink placeholder:text-faint',
     'icon-btn': 'w-9 h-9 rounded-full flex items-center justify-center text-dim hover:text-ink hover:bg-field transition-colors',
     chrome: 'h-14 px-4 flex items-center gap-3 border-b border-line flex-shrink-0',
   },
