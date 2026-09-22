@@ -1,0 +1,12 @@
+node_modules
+dist
+.secrets
+test-results
+playwright-report
+data.sqlite
+.DS_Store
+tests/__screens
+data.sqlite*
+.env.local
+.env.*.local
+perf-results

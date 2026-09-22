@@ -1,0 +1,10 @@
+import { chromium } from '@playwright/test'
+const b = await chromium.launch(); const c = await b.newContext({ colorScheme: 'dark' }); const p = await c.newPage()
+await p.goto(`http://localhost:5605/?room=brand-${Date.now().toString(36)}&relay=ws://127.0.0.1:9`)
+await p.getByTestId('join').waitFor(); await p.waitForTimeout(400)
+await p.screenshot({ path: 'tests/__screens/brand-login.png' })
+await p.getByTestId('join').click(); await p.getByRole('button', { name: 'I saved it' }).click()
+await p.getByTestId('sidebar-chat-list').waitFor({ timeout: 30000 }); await p.waitForTimeout(400)
+await p.screenshot({ path: 'tests/__screens/brand-app.png' })
+console.log('title:', await p.title(), '· h1:', (await p.locator('h1').first().textContent()).trim())
+await b.close()

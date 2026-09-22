@@ -1,0 +1,35 @@
+{
+  "name": "dmessenger",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "A serverless, private messenger on one GenosDB graph: no relays, no servers, governance included",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "relay": "bun node_modules/genosdb/dist/genossrv.min.js dmessenger --relay --room",
+    "test": "playwright test",
+    "icons": "node scripts/icons.mjs",
+    "mint": "node scripts/mint.mjs",
+    "pretest": "node scripts/mint.mjs --if-missing",
+    "perf": "playwright test --config playwright.perf.config.js"
+  },
+  "devDependencies": {
+    "@iconify-json/carbon": "^1.2.24",
+    "@playwright/test": "^1.63.0",
+    "@unocss/preset-icons": "^66.7.5",
+    "@unocss/preset-uno": "^66.7.5",
+    "@unocss/transformer-directives": "^66.7.5",
+    "genosdb": "0.36.3",
+    "unocss": "^66.7.5",
+    "vite": "^7.3.6",
+    "vite-plugin-pwa": "1.3.0",
+    "workbox-window": "7.4.1"
+  },
+  "dependencies": {
+    "jsqr": "1.4.0",
+    "minidenticons": "4.2.1",
+    "qrcode": "1.5.4"
+  }
+}

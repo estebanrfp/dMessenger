@@ -1,0 +1,186 @@
+/*
+ * Design tokens — the classic messenger look: a deep page, lifted surfaces,
+ * an indigo accent and generous radii. Every value is ours, as an RGB triplet
+ * so utilities can carry an alpha. Dark is the default; `data-theme="light"`
+ * swaps the values and nothing else changes.
+ */
+:root {
+  --bg-page: 9 9 12;
+  --bg-card: 24 24 30;
+  --bg-field: 38 38 46;
+  --bg-raised: 54 54 64;
+
+  --text-ink: 246 246 250;
+  --text-dim: 160 166 180;
+  --text-faint: 112 118 132;
+  --text-on-accent: 255 255 255;
+
+  --accent: 96 92 235;
+  --accent-hover: 78 74 214;
+  --ok: 52 199 123;
+  --warn: 245 166 35;
+  --danger: 239 83 80;
+  --violet: 167 139 250;
+
+  --border-line: 44 44 54;
+  --border-strong: 62 62 74;
+
+  /* Trust ramp for roles: gray -> green -> blue -> orange -> violet */
+  --role-guest: 112 118 132;
+  --role-user: 52 199 123;
+  --role-manager: 76 141 255;
+  --role-admin: 245 166 35;
+  --role-superadmin: 167 139 250;
+
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --shadow: 0 10px 30px rgb(0 0 0 / 0.4);
+  --backdrop: rgb(0 0 0 / 0.7);
+
+  --font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace;
+
+  font-family: var(--font);
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: dark;
+  color: rgb(var(--text-ink));
+  background-color: rgb(var(--bg-page));
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html[data-theme='light'] {
+  --bg-page: 240 241 246;
+  --bg-card: 255 255 255;
+  --bg-field: 236 238 244;
+  --bg-raised: 220 223 232;
+
+  --text-ink: 20 22 30;
+  --text-dim: 92 100 116;
+  --text-faint: 140 148 162;
+
+  --accent: 84 80 220;
+  --accent-hover: 70 66 200;
+  --ok: 22 163 74;
+  --warn: 180 83 9;
+  --danger: 220 38 38;
+  --violet: 124 58 237;
+
+  --border-line: 222 225 233;
+  --border-strong: 204 208 218;
+
+  --role-guest: 140 148 162;
+  --role-user: 22 163 74;
+  --role-manager: 37 99 235;
+  --role-admin: 180 83 9;
+  --role-superadmin: 124 58 237;
+
+  --shadow: 0 8px 28px rgb(20 22 30 / 0.10);
+  --backdrop: rgb(20 22 30 / 0.5);
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  touch-action: manipulation;
+  -webkit-text-size-adjust: 100%;
+  overscroll-behavior: none;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100dvh;
+  overscroll-behavior: none;
+}
+
+html, #app { width: 100%; min-height: 100dvh; }
+
+button {
+  font: inherit;
+  border: none;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input, textarea, select {
+  font: inherit;
+  border: none;
+  background: none;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* Runtime visibility toggle. A display utility such as `flex` is emitted after
+   `hidden` and would win; this one cannot be outranked by ordering. */
+.is-hidden { display: none !important; }
+
+/* Typing indicator: three dots breathing in sequence. */
+.typing-dot {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 9999px;
+  background: rgb(var(--text-dim));
+  animation: typing-bounce 1.2s infinite ease-in-out;
+}
+
+@keyframes typing-bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-0.2rem); opacity: 1; }
+}
+
+/* Toast stack: results speak here, never in alert(). */
+.toast-stack {
+  position: fixed;
+  bottom: 1rem;
+  left: 50%;
+  translate: -50% 0;
+  display: grid;
+  gap: 0.5rem;
+  z-index: 100;
+  pointer-events: none;
+  max-width: calc(100vw - 2rem);
+}
+
+.toast {
+  padding: 0.6rem 1rem;
+  border-radius: 9999px;
+  background: rgb(var(--bg-field));
+  border: 1px solid rgb(var(--border-strong));
+  color: rgb(var(--text-ink));
+  font-size: 0.875rem;
+  box-shadow: var(--shadow);
+  animation: toast-in 0.18s ease-out;
+}
+
+.toast[data-kind='error'] { border-color: rgb(var(--danger)); }
+.toast[data-kind='ok'] { border-color: rgb(var(--ok)); }
+.toast[data-kind='info'] { border-color: rgb(var(--accent)); }
+
+@keyframes toast-in { from { opacity: 0; transform: translateY(0.4rem); } }
+
+dialog {
+  border: 1px solid rgb(var(--border-line));
+  border-radius: var(--radius-lg);
+  background: rgb(var(--bg-card));
+  color: rgb(var(--text-ink));
+  padding: 1.25rem;
+  max-width: min(28rem, calc(100vw - 2rem));
+  box-shadow: var(--shadow);
+}
+
+dialog::backdrop { background: var(--backdrop); }
+
+.mono { font-family: var(--mono); }

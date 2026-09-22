@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      // Resolve the theme before first paint so there is no flash of the wrong palette.
+      ;(() => {
+        let stored = null
+        try { stored = localStorage.getItem('dmessenger-theme') } catch {}
+        const preference = stored === 'light' || stored === 'dark' ? stored : 'system'
+        const systemLight = window.matchMedia('(prefers-color-scheme: light)').matches
+        const resolved = preference === 'system' ? (systemLight ? 'light' : 'dark') : preference
+        document.documentElement.dataset.themePreference = preference
+        document.documentElement.dataset.theme = resolved
+      })()
+    </script>
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#09090c" />
+    <title>dMessenger</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
