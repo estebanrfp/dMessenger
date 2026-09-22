@@ -193,6 +193,10 @@ Honest boundaries, since the point is a technical demonstration:
 - [GenosDB](https://github.com/estebanrfp/gdb) — the serverless, peer-to-peer graph database with a zero-trust Security Manager this app is built on.
 - [minidenticons](https://github.com/laurentpayot/minidenticons) for avatars, [qrcode](https://github.com/soldair/node-qrcode) and [jsqr](https://github.com/cozmo/jsQR) for invites.
 
+## License
+
+[MIT](LICENSE). The engine it runs on, [GenosDB](https://github.com/estebanrfp/gdb), carries its own license.
+
 ## Author
 
 Esteban Fuster Pozzi (@estebanrfp) - Full Stack JavaScript Developer
