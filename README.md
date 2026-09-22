@@ -180,6 +180,22 @@ Same setup, one more step. Alice, now a `manager`, creates a group with Bob and 
 
 Bob's window is the honest picture of what removal can and cannot do: what he read while he was in is still on his screen — no rotation takes that back — and what came after is ciphertext for a key he cannot reach. Nobody asked his client to cooperate; the envelope did the work.
 
+### Message lifetime, shown live
+
+Two windows, Alice and Bob, a fresh conversation. Alice sets the policy from the menu; the demo then uses a 20-second lifetime through the same code path the picker uses, so the whole thing fits in half a minute. Times from Alice's sign-in.
+
+| | when |
+|---|---|
+| Conversation open on both sides, key shared | 11 s |
+| Alice picks *1 hour* from the menu; **Bob's header reads *expire after 1 hour* without touching anything** — the policy is a field on the space node both may write, and every peer accepts the change | 11 s |
+| A 20-second lifetime; Alice sends. Bob reads it with a countdown on the bubble | 12 s |
+| **It leaves both screens 20.5 s after it was sent; both graphs hold zero message nodes** — the author removed hers, Bob forgot his | 32 s |
+| Policy off; Alice sends again; Bob reads it with no countdown — the sentinel: the conversation is alive after the removal | 33 s |
+
+<p align="center"><img src="docs/lifetime-countdown.png" width="49%" alt="Bob's window: a message with a 20-second countdown, the header saying expire after 20s"> <img src="docs/lifetime-after.png" width="49%" alt="Bob's window after it expired: only the later message, which stays"></p>
+
+Nothing here waited for the other side: Bob's screen dropped the message on its own clock, his graph forgot it on its own sweep, and Alice's removal — the only one every peer signs off on — arrived on top. Three enforcement points, none trusting the others, which is what makes it hold against a laggard bringing an expired node back (that case is in the suite).
+
 The base role writes, links and deletes on purpose — an open platform. Every node carries an owner the gate enforces on every peer, so deleting at the floor only ever means deleting your own: the residual risk is spam, never takeover. This was learned the hard way — a `guest` retracting a reaction had its `remove` refused by every other peer until `delete` moved down the ladder.
 
 ## Tests
