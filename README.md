@@ -142,6 +142,27 @@ The three buttons sit on the identity door, as the guide's demo shortcut. Open t
 
 For a deployment of your own, set `VITE_SUPERADMINS` (comma-separated addresses) at build time: the constitution becomes yours and the demo buttons disappear, because the canonical superadmin would not be in it. `pnpm mint` creates an identity for that — its mnemonic goes to `.secrets/superadmin.json` and its address to `.env.local`, both ignored by git.
 
+### Governance, shown live
+
+Everything below was run against the public site, in isolated browser windows, over the default public relays — not on localhost. Times are from the moment Alice signed in.
+
+| | when |
+|---|---|
+| Superadmin signs in with one click; its window runs the engine | — |
+| Alice signs in with one click and arrives as `guest` | 0 s |
+| The two windows see each other (public relays + ICE) | 4 s |
+| **Rule 1** — a guest stable for 8 s becomes `user`, signed in the Superadmin's window | **18 s** |
+| Superadmin and Bob each sign a vouch for Alice; she publishes her count (declared 2 · verifiable 2) | 18 s |
+| **Rule 3** — two vouches make her `manager` | **22 s** |
+| *New group* is enabled: `manager` carries `publish`. She creates one; Bob sees it | 23 s |
+
+<p align="center"><img src="docs/demo-door.png" width="49%" alt="The identity door with the demo identities: Superadmin, Alice and Bob"> <img src="docs/governance-user.png" width="49%" alt="Alice's window: promoted to user by rule 1"></p>
+<p align="center"><img src="docs/governance-manager.png" width="49%" alt="Alice's window: manager after two verifiable vouches"> <img src="docs/governance-group.png" width="49%" alt="Alice, now a manager, has created a group"></p>
+
+Alice's own window says *waiting for a superadmin window* the whole time — she never ran the engine. Her role changed anyway: another peer signed the decision and every peer accepted it. That is the point.
+
+To reproduce: open [the demo](https://estebanrfp.github.io/dMessenger/) in two windows (three for the vouches), press 🛡️ Superadmin in one and 👩‍🦰 Alice in the other, and watch the badge at the bottom of Alice's sidebar. In the governance panel, *Vouch* on her row from two identities, then *Publish my vouch count* in hers.
+
 The base role writes, links and deletes on purpose — an open platform. Every node carries an owner the gate enforces on every peer, so deleting at the floor only ever means deleting your own: the residual risk is spam, never takeover. This was learned the hard way — a `guest` retracting a reaction had its `remove` refused by every other peer until `delete` moved down the ladder.
 
 ## Tests
