@@ -163,6 +163,23 @@ Alice's own window says *waiting for a superadmin window* the whole time — she
 
 To reproduce: open [the demo](https://estebanrfp.github.io/dMessenger/) in two windows (three for the vouches), press 🛡️ Superadmin in one and 👩‍🦰 Alice in the other, and watch the badge at the bottom of Alice's sidebar. In the governance panel, *Vouch* on her row from two identities, then *Publish my vouch count* in hers.
 
+### Removal, shown live
+
+Same setup, one more step. Alice, now a `manager`, creates a group with Bob and Superadmin, writes one message, removes Bob from the roster, and writes another. Times from Alice's sign-in.
+
+| | when |
+|---|---|
+| Alice is `manager`; the group exists; Bob and Superadmin hold the key | 22 s |
+| Epoch 0 — *before the removal*, read by both | 22–27 s |
+| Alice removes Bob: his envelope is revoked, a new epoch key is appended, the roster is written | 28 s |
+| Epoch 1 — *after the removal*: **Superadmin, who stayed, reads both** | 29 s |
+| Bob's list no longer has the group; his graph still holds both message nodes (he keeps replicating — the sentinel); the key record no longer opens for him; the new plaintext is nowhere in the bytes he holds | 30 s |
+
+<p align="center"><img src="docs/removal-roster.png" width="49%" alt="Alice's roster after removing Bob: two members, a new epoch open"> <img src="docs/removal-stayed.png" width="49%" alt="Superadmin, who stayed, reads both epochs"></p>
+<p align="center"><img src="docs/removal-removed.png" width="60%" alt="Bob's window: the message he read while a member is still there; the one after it is sealed for a key he no longer holds"></p>
+
+Bob's window is the honest picture of what removal can and cannot do: what he read while he was in is still on his screen — no rotation takes that back — and what came after is ciphertext for a key he cannot reach. Nobody asked his client to cooperate; the envelope did the work.
+
 The base role writes, links and deletes on purpose — an open platform. Every node carries an owner the gate enforces on every peer, so deleting at the floor only ever means deleting your own: the residual risk is spam, never takeover. This was learned the hard way — a `guest` retracting a reaction had its `remove` refused by every other peer until `delete` moved down the ladder.
 
 ## Tests
