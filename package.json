@@ -32,5 +32,10 @@
     "jsqr": "1.4.0",
     "minidenticons": "4.2.1",
     "qrcode": "1.5.4"
+  },
+  "homepage": "https://estebanrfp.github.io/dMessenger/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/estebanrfp/dMessenger.git"
   }
 }

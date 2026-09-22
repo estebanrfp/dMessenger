@@ -4,7 +4,7 @@
  * have — including the case where an authenticator has no PRF extension and the
  * passkey silently protects nothing.
  */
-import { el, $, clear } from './dom.js'
+import { el, $, clear, asset } from './dom.js'
 import { toast, secretDialog } from './toast.js'
 import { PASSKEYS_AVAILABLE, register, loginWithMnemonic, loginWithPasskey, hasPasskey, setDisplayName } from '../lib/identity.js'
 
@@ -17,7 +17,7 @@ export const renderLogin = (root) => {
   root.className = 'h-full flex flex-col items-center justify-center p-4'
 
   const brand = el('div', 'mb-8 text-center flex flex-col items-center select-none')
-  const logo = el('img', 'w-16 h-12 mb-4', { src: '/logo.svg', alt: '', draggable: false })
+  const logo = el('img', 'w-16 h-12 mb-4', { src: asset('logo.svg'), alt: '', draggable: false })
   const title = el('h1', 'text-4xl font-bold')
   title.append(el('span', 'text-accent', { textContent: 'd' }), document.createTextNode('Messenger'))
   brand.append(logo, title, el('p', 'text-dim mt-2', { textContent: 'Serverless, private messaging' }))

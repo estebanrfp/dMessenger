@@ -14,7 +14,13 @@ const ENGINE_ORIGIN = /^https:\/\/cdn\.jsdelivr\.net\/npm\/genosdb@/
 // controls the page, so runtime caching alone would leave the cache empty.
 const ENGINE_FILES = ['index.min.js', 'sm.min.js', 'sm-acls.min.js', 'sm-gov.min.js', 'genosrtc.min.js']
 
+// Where the app is served from. GitHub Pages mounts a project site under its
+// name, so the deploy workflow builds with BASE_PATH=/dMessenger/; locally and
+// in the test suites it stays at the root.
+const BASE = process.env.BASE_PATH ?? '/'
+
 export default defineConfig({
+  base: BASE,
   plugins: [
     UnoCSS(),
     VitePWA({
@@ -24,14 +30,15 @@ export default defineConfig({
         name: 'dMessenger',
         short_name: 'dMessenger',
         description: 'Serverless, private messaging on one GenosDB graph',
-        start_url: '/',
+        start_url: BASE,
+        scope: BASE,
         display: 'standalone',
         background_color: '#09090c',
         theme_color: '#09090c',
         icons: [
-          { src: '/icon-192.png', sizes: '192x192', type: 'image/png' },
-          { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
-          { src: '/icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+          { src: `${BASE}icon-192.png`, sizes: '192x192', type: 'image/png' },
+          { src: `${BASE}icon-512.png`, sizes: '512x512', type: 'image/png', purpose: 'any' },
+          { src: `${BASE}icon-maskable-512.png`, sizes: '512x512', type: 'image/png', purpose: 'maskable' },
         ],
       },
       workbox: {
@@ -39,7 +46,7 @@ export default defineConfig({
         skipWaiting: true,
         globPatterns: ['**/*.{js,css,html,svg,png,webmanifest}'],
         additionalManifestEntries: ENGINE_FILES.map(file => ({ url: ENGINE_BASE + file, revision: ENGINE_VERSION })),
-        navigateFallback: '/index.html',
+        navigateFallback: `${BASE}index.html`,
         runtimeCaching: [{
           urlPattern: ({ url }) => ENGINE_ORIGIN.test(url.href),
           handler: 'CacheFirst',

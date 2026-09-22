@@ -3,7 +3,7 @@
  * hands us the prompt; we only decide whether to show it, and remember a
  * dismissal on this device so it is not asked again for a week.
  */
-import { el } from './dom.js'
+import { el, asset } from './dom.js'
 
 const KEY = 'dmessenger-install-dismissed'
 const WEEK = 7 * 86_400_000
@@ -32,7 +32,7 @@ export const mountInstallPrompt = () => {
       banner.classList.add('is-hidden')
     },
   })
-  banner.append(el('img', 'w-10 h-10', { src: '/logo.svg', alt: '' }), text, later, install)
+  banner.append(el('img', 'w-10 h-10', { src: asset('logo.svg'), alt: '' }), text, later, install)
   document.body.append(banner)
 
   window.addEventListener('beforeinstallprompt', (event) => {

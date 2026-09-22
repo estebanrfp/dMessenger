@@ -1,5 +1,7 @@
 # dMessenger
 
+**Live: [estebanrfp.github.io/dMessenger](https://estebanrfp.github.io/dMessenger/)** — open it in two browsers, or on two devices, and paste one address into the other's *New chat*.
+
 A private messenger that runs entirely between its users: **one GenosDB graph**, no relays holding messages, no server anywhere in the data path, and a constitution every peer enforces on its own copy.
 
 It exists to answer a specific question — can a full messenger be expressed in GenosDB's own primitives, with nothing added underneath? — and to show what each part of the ecosystem is for when it is: the graph, the Security Manager, ACLs, governance, GenosRTC and the Fallback Server. Everything below is verified by the test suite, in real browsers, over real WebRTC.
@@ -148,6 +150,15 @@ Nineteen specs, one worker, a fresh room per test, discovery on a local relay (a
 - **reactions** — a reply quotes the original on both sides; reactions are counted per reactor, replaced on change and removed only by their owner; and a forged reaction in someone else's name is refused by every peer, sentinel included.
 - **expiry** — either side of a 1:1 sets the policy and both see it; an expiring message leaves every honest screen and its author removes it from the graph; and a returning device cannot resurrect it once its tombstone has rolled out of a 3-op window — asserted after a sentinel proves the device is replicating.
 - **isolation** — a platform check: OPFS is isolated per `BrowserContext` and shared between tabs of one. Undocumented by Playwright, so it is asserted rather than assumed.
+
+## Deploying
+
+The app is static: a build and a place to serve it from. It is published on **GitHub Pages** by `.github/workflows/pages.yml` on every push to `main`. Two build-time settings do all the work:
+
+- `BASE_PATH` — a project site is mounted under its name, so the workflow builds with `/dMessenger/`. Locally and in the test suites it stays at `/`. Every public asset goes through `import.meta.env.BASE_URL`, the manifest and the service worker scope follow it.
+- `VITE_SUPERADMINS` — the constitution, as a **repository variable** (an address is public; only the mnemonic is secret, and it never leaves its owner). Without it the public build would have an empty superadmin list, and nobody could ever be promoted.
+
+There is no server to deploy. The public site uses the engine's default signaling relays; run `pnpm relay` anywhere for an always-on peer that also holds the graph while everyone else is away.
 
 ## Performance, measured
 

@@ -6,7 +6,7 @@
  * one over the messages of this space, one over its reactions. Four actions
  * handled explicitly, ordering delegated to the engine, the DOM as the state.
  */
-import { el, clear, say, shortAddress, formatTime, formatDay } from './dom.js'
+import { el, clear, say, shortAddress, formatTime, formatDay, asset } from './dom.js'
 import { avatar } from './avatar.js'
 import { session } from '../lib/identity.js'
 import { counterpart } from '../lib/conversations.js'
@@ -552,7 +552,7 @@ export const renderEmpty = (root) => {
   clear(root)
   root.className = 'flex-1 flex flex-col items-center justify-center bg-page p-8 text-center'
   root.append(
-    el('img', 'w-16 h-12 mb-4 opacity-40', { src: '/logo.svg', alt: '', draggable: false }),
+    el('img', 'w-16 h-12 mb-4 opacity-40', { src: asset('logo.svg'), alt: '', draggable: false }),
     el('h2', 'text-xl font-bold mb-1', { textContent: 'No conversation open' }),
     el('p', 'text-dim max-w-sm', { textContent: 'Start one with another address, or create a group. The key is sealed in the graph and shared only with its members.' }),
   )

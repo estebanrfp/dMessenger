@@ -41,3 +41,6 @@ export const formatDay = (ts) => {
   if (date.toDateString() === yesterday.toDateString()) return 'Yesterday'
   return day.format(date)
 }
+
+/** A public asset's URL, wherever the app is mounted (root or a sub-path). */
+export const asset = (name) => `${import.meta.env.BASE_URL}${name}`

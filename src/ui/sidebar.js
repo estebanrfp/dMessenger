@@ -5,7 +5,7 @@
  * `t: 'conv'`, one over `t: 'group'`, one over `t: 'msg'` for the preview
  * column. The engine sorts and windows; the DOM is the state.
  */
-import { el, clear, say, shortAddress, formatTime } from './dom.js'
+import { el, clear, say, shortAddress, formatTime, asset } from './dom.js'
 import { avatar } from './avatar.js'
 import { session, onSession, abbr, atLeast, PASSKEYS_AVAILABLE, protectWithPasskey } from '../lib/identity.js'
 import { watchConversations, counterpart } from '../lib/conversations.js'
@@ -72,7 +72,7 @@ export const renderSidebar = async (root, handlers) => {
   const brand = el('div', 'flex items-center gap-2 select-none')
   const title = el('h1', 'text-xl font-bold')
   title.append(el('span', 'text-accent', { textContent: 'd' }), document.createTextNode('Messenger'))
-  brand.append(el('img', 'w-8 h-8', { src: '/logo.svg', alt: '', draggable: false }), title)
+  brand.append(el('img', 'w-8 h-8', { src: asset('logo.svg'), alt: '', draggable: false }), title)
 
   const tools = el('div', 'flex items-center gap-1')
   const settings = el('button', 'p-2 rounded-full text-dim hover:bg-field hover:text-ink transition-colors', {
