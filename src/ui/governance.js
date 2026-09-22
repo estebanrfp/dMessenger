@@ -12,6 +12,7 @@ import { db } from '../lib/db.js'
 import { SUPERADMINS, GOVERNANCE, ROLES } from '../lib/constitution.js'
 import { vouch, countVouches, watchIdentities, publishOwnVouchCount } from '../lib/vouches.js'
 import { toast } from './toast.js'
+import { DEMO_MODE } from '../lib/constitution.js'
 
 const ROLE_ORDER = ['guest', 'user', 'manager', 'admin', 'superadmin']
 
@@ -60,7 +61,17 @@ export const renderGovernance = async (root, handlers) => {
     item.textContent = `if ${JSON.stringify(rule.if)}${when} → ${rule.then.assignRole}`
     ruleList.append(item)
   }
-  rules.append(el('p', 'text-xs text-faint uppercase tracking-wide pt-2', { textContent: 'Rules — evaluated every 4s, last match wins' }), ruleList)
+  const engine = el('p', 'text-xs text-warn pt-2', { dataset: { testid: 'engine-status' } })
+  rules.append(el('p', 'text-xs text-faint uppercase tracking-wide pt-2', { textContent: 'Rules — evaluated every 4s, last match wins' }), ruleList, engine)
+  const paintEngine = () => {
+    const running = atLeast('superadmin')
+    say(engine, running
+      ? 'Engine: running in this window — every promotion is signed here'
+      : `Engine: waiting for a superadmin window${DEMO_MODE ? ' — open another window and sign in as 🛡️ Superadmin' : ''}`)
+    engine.classList.toggle('text-ok', running)
+    engine.classList.toggle('text-warn', !running)
+  }
+  paintEngine()
   constitution.append(rules)
 
   // ── identities ──

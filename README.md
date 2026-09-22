@@ -115,7 +115,6 @@ An outsider in the same room replicates every byte of all of it and reads none o
 ```bash
 pnpm install
 pnpm exec playwright install chromium   # once, for the suite
-pnpm mint       # a local superadmin for governance (pnpm test does this on its own)
 pnpm dev        # http://localhost:5605
 pnpm build && pnpm preview   # the production build, as a PWA, on :5608
 ```
@@ -132,9 +131,16 @@ pnpm relay
 
 Runs the Fallback Server as an always-on peer with an embedded signaling relay on `:8080`. It holds the graph in SQLite and serves discovery locally, so nothing leaves the machine.
 
-### The constitution
+### The constitution, and the demo identities
 
-`src/lib/constitution.js` holds it, and it must be identical on every peer and on the Fallback Server. The superadmin addresses come from `VITE_SUPERADMINS` in `.env.local`, compiled into the bundle. `pnpm mint` creates a local one for you — its mnemonic goes to `.secrets/superadmin.json` and its address to `.env.local`, both ignored by git — and `pnpm test` runs it on its own when nothing has been minted yet. Neither file is in the repository: a public demo room with a public superadmin would have no constitution at all.
+`src/lib/constitution.js` holds it, and it must be identical on every peer and on the Fallback Server. By default it references the **canonical demo superadmin of the GenosDB design guide** (§4.5) — the one fixed set of public, throwaway identities every GenosDB example shares, so any two windows can sign in with a click and already know each other:
+
+- **🛡️ Superadmin** — its window runs the governance engine and signs every promotion.
+- **👩‍🦰 Alice** and **👨‍🦱 Bob** — arrive as guests and get promoted by the rules.
+
+The three buttons sit on the identity door, as the guide's demo shortcut. Open the app in two windows, sign in as Superadmin in one and as Alice in the other, and watch Alice become `user` in eight seconds — signed in the other window, agreed by every peer. They protect nothing and are meant to be public; they are how the trust model is *shown*.
+
+For a deployment of your own, set `VITE_SUPERADMINS` (comma-separated addresses) at build time: the constitution becomes yours and the demo buttons disappear, because the canonical superadmin would not be in it. `pnpm mint` creates an identity for that — its mnemonic goes to `.secrets/superadmin.json` and its address to `.env.local`, both ignored by git.
 
 The base role writes, links and deletes on purpose — an open platform. Every node carries an owner the gate enforces on every peer, so deleting at the floor only ever means deleting your own: the residual risk is spam, never takeover. This was learned the hard way — a `guest` retracting a reaction had its `remove` refused by every other peer until `delete` moved down the ladder.
 
@@ -162,7 +168,7 @@ Nineteen specs, one worker, a fresh room per test, discovery on a local relay (a
 The app is static: a build and a place to serve it from. It is published on **GitHub Pages** by `.github/workflows/pages.yml` on every push to `main`. Two build-time settings do all the work:
 
 - `BASE_PATH` — a project site is mounted under its name, so the workflow builds with `/dMessenger/`. Locally and in the test suites it stays at `/`. Every public asset goes through `import.meta.env.BASE_URL`, the manifest and the service worker scope follow it.
-- `VITE_SUPERADMINS` — the constitution, as a **repository variable** (an address is public; only the mnemonic is secret, and it never leaves its owner). Without it the public build would have an empty superadmin list, and nobody could ever be promoted.
+- `VITE_SUPERADMINS` — only for a deployment with a constitution of its own. The public site is the demo and compiles in the canonical demo superadmin, so governance can be shown by anyone who opens two windows.
 
 There is no server to deploy. The public site uses the engine's default signaling relays; run `pnpm relay` anywhere for an always-on peer that also holds the graph while everyone else is away.
 

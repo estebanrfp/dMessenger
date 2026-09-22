@@ -1,0 +1,11 @@
+import { chromium } from '@playwright/test'
+const b = await chromium.launch(); const c = await b.newContext({ colorScheme: 'dark' }); const p = await c.newPage()
+await p.goto(`http://localhost:5605/?room=door-${Date.now().toString(36)}&relay=ws://127.0.0.1:9`)
+await p.getByTestId('demo-superadmin').waitFor({ timeout: 30000 }); await p.waitForTimeout(300)
+await p.screenshot({ path: 'tests/__screens/door-demo.png' })
+await p.getByTestId('demo-superadmin').click()
+await p.getByTestId('chat-list').waitFor({ timeout: 30000 })
+await p.getByTestId('open-governance').click(); await p.waitForTimeout(800)
+console.log('rol:', await p.getByTestId('role-badge').textContent(), '· motor:', await p.getByTestId('engine-status').textContent())
+await p.screenshot({ path: 'tests/__screens/governance-engine.png' })
+await b.close()

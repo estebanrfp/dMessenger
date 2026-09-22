@@ -13,7 +13,6 @@
     "test": "playwright test",
     "icons": "node scripts/icons.mjs",
     "mint": "node scripts/mint.mjs",
-    "pretest": "node scripts/mint.mjs --if-missing",
     "perf": "playwright test --config playwright.perf.config.js"
   },
   "devDependencies": {

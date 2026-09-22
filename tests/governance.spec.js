@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test'
-import { readFileSync, existsSync } from 'node:fs'
 import { room, openPeer } from './helpers.js'
 
 /**
@@ -10,11 +9,8 @@ import { room, openPeer } from './helpers.js'
  * Rule 1 keys on time the engine itself observed, so no client can forge it:
  * a guest whose node has been stable for 8s becomes a user.
  */
-const SECRET = new URL('../.secrets/superadmin.json', import.meta.url).pathname
 
 test('a guest is promoted by a signed decision, and every peer agrees', async ({ browser }) => {
-  test.skip(!existsSync(SECRET), 'no superadmin mnemonic in .secrets (see README)')
-  const { mnemonic } = JSON.parse(readFileSync(SECRET, 'utf8'))
   const name = room()
 
   const newcomer = await openPeer(browser, name)
@@ -24,9 +20,7 @@ test('a guest is promoted by a signed decision, and every peer agrees', async ({
   const admin = await browser.newContext()
   const adminPage = await admin.newPage()
   await adminPage.goto(`/?room=${name}&relay=ws://127.0.0.1:5606`)
-  await adminPage.getByRole('button', { name: 'Recover with a phrase' }).click()
-  await adminPage.getByTestId('mnemonic').fill(mnemonic)
-  await adminPage.getByTestId('recover-confirm').click()
+  await adminPage.getByTestId('demo-superadmin').click()            // the design guide's one-click demo shortcut
   await expect(adminPage.getByTestId('chat-list')).toBeVisible()
   await expect(adminPage.getByTestId('role-badge')).toHaveText('superadmin')
 

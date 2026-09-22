@@ -4,15 +4,23 @@
  * or a URL: a peer that reads its rules from the network has no rules.
  */
 
+import { SUPERADMIN } from './demo.js'
+
 /**
- * The superadmins, from build-time configuration (`VITE_SUPERADMINS` in
- * `.env.local`, comma-separated; `pnpm mint` writes one for a fresh clone).
- * Compiled into the bundle, so every peer built from it agrees — and never
- * read from a URL, a channel or the graph. An empty list means nobody can ever
- * be promoted, which is the safe failure.
+ * The superadmins. By default the canonical demo superadmin of the GenosDB
+ * design guide (§4.5) — every example references that address, never a
+ * placeholder and never an invented one. A deployment sets `VITE_SUPERADMINS`
+ * (comma-separated) at build time to ship its own constitution; that also
+ * turns the demo identities off. Compiled into the bundle, so every peer built
+ * from it agrees, and never read from a URL, a channel or the graph.
  */
-export const SUPERADMINS = (import.meta.env.VITE_SUPERADMINS ?? '')
+const configured = (import.meta.env.VITE_SUPERADMINS ?? '')
   .split(',').map(a => a.trim()).filter(a => /^0x[0-9a-fA-F]{40}$/.test(a))
+
+export const SUPERADMINS = configured.length ? configured : [SUPERADMIN.address]
+
+/** True when the constitution is the demo one — the one-click identities are offered. */
+export const DEMO_MODE = configured.length === 0
 
 /**
  * Open platform: the base role writes, links and deletes, so a brand-new

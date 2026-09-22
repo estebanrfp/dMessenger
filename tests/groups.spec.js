@@ -1,18 +1,13 @@
 import { test, expect } from '@playwright/test'
-import { readFileSync, existsSync } from 'node:fs'
 import { room, openPeer, RELAY } from './helpers.js'
 
-const SECRET = new URL('../.secrets/superadmin.json', import.meta.url).pathname
 
-/** Signs in the demo superadmin, who also runs the governance engine. */
+/** Signs in the demo superadmin with the one-click shortcut; its window runs the governance engine. */
 const openSuperadmin = async (browser, name) => {
-  const { mnemonic } = JSON.parse(readFileSync(SECRET, 'utf8'))
   const context = await browser.newContext()
   const page = await context.newPage()
   await page.goto(`/?room=${name}&relay=${RELAY}`)
-  await page.getByRole('button', { name: 'Recover with a phrase' }).click()
-  await page.getByTestId('mnemonic').fill(mnemonic)
-  await page.getByTestId('recover-confirm').click()
+  await page.getByTestId('demo-superadmin').click()
   await expect(page.getByTestId('role-badge')).toHaveText('superadmin')
   return { context, page, address: await page.evaluate(() => window.app.address()) }
 }
@@ -47,7 +42,6 @@ const earnManager = async (subject, vouchers) => {
 }
 
 test('creating a group needs the publish permission the ladder grants', async ({ browser }) => {
-  test.skip(!existsSync(SECRET), 'no superadmin mnemonic in .secrets (see README)')
   const name = room()
   const alice = await openPeer(browser, name)
 
@@ -75,7 +69,6 @@ test('creating a group needs the publish permission the ladder grants', async ({
 })
 
 test('a removed member keeps the past and loses the future', async ({ browser }) => {
-  test.skip(!existsSync(SECRET), 'no superadmin mnemonic in .secrets (see README)')
   const name = room()
   const alice = await openPeer(browser, name)
   const bob = await openPeer(browser, name)

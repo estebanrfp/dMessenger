@@ -25,13 +25,13 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      # The constitution is build-time configuration: the superadmin addresses
-      # come from a repository variable (an address is public; the mnemonic
-      # never leaves its owner). The app is a project site, hence the base path.
+      # The public site is the demo: its constitution is the canonical demo
+      # superadmin of the GenosDB design guide, compiled in by default. A
+      # deployment of your own sets VITE_SUPERADMINS here. Project site, hence
+      # the base path.
       - run: pnpm build
         env:
           BASE_PATH: /dMessenger/
-          VITE_SUPERADMINS: ${{ vars.VITE_SUPERADMINS }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

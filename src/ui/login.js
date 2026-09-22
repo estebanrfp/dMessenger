@@ -7,6 +7,8 @@
 import { el, $, clear, asset } from './dom.js'
 import { toast, secretDialog } from './toast.js'
 import { PASSKEYS_AVAILABLE, register, loginWithMnemonic, loginWithPasskey, hasPasskey, setDisplayName } from '../lib/identity.js'
+import { DEMO_MODE } from '../lib/constitution.js'
+import { DEMO_IDENTITIES } from '../lib/demo.js'
 
 /**
  * Renders the login screen into a container.
@@ -92,6 +94,30 @@ export const renderLogin = (root) => {
   actions.append(join)
   if (PASSKEYS_AVAILABLE && hasPasskey()) actions.append(passkey)
   actions.append(recover, recoverBox)
+
+  // The demo shortcut of the design guide (§4.1, §4.5): one quiet button per
+  // canonical identity, on the same action row, so two windows can meet in a
+  // click — Superadmin's window runs the governance engine, Alice and Bob
+  // arrive as guests and get promoted by its rules.
+  if (DEMO_MODE) {
+    const demo = el('div', 'pt-3 border-t border-line space-y-2')
+    demo.append(el('p', 'text-xs text-faint text-center', { textContent: 'Demo identities — public, throwaway, shared by every GenosDB example' }))
+    const rowNode = el('div', 'grid grid-cols-3 gap-2')
+    for (const identity of DEMO_IDENTITIES) {
+      const button = el('button', 'btn-ghost text-sm px-2', {
+        title: `${identity.name} (demo) · ${identity.address}`,
+        dataset: { testid: `demo-${identity.name.toLowerCase()}` },
+        onclick: async () => {
+          busy(true)
+          try { await loginWithMnemonic(identity.mnemonic) } catch (error) { fail(error.message ?? String(error)) } finally { busy(false) }
+        },
+      })
+      button.append(el('span', '', { textContent: identity.emoji }), document.createTextNode(` ${identity.name}`))
+      rowNode.append(button)
+    }
+    demo.append(rowNode)
+    actions.append(demo)
+  }
 
   form.append(nameField, errorBox, actions)
   card.append(form)

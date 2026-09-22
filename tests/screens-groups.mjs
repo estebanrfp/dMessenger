@@ -1,6 +1,6 @@
 import { chromium } from '@playwright/test'
-import { readFileSync } from 'node:fs'
-const { mnemonic } = JSON.parse(readFileSync(new URL('../.secrets/superadmin.json', import.meta.url).pathname, 'utf8'))
+import { SUPERADMIN } from '../src/lib/demo.js'
+const { mnemonic } = SUPERADMIN
 const RUN = `g-${Date.now().toString(36)}`
 const U = `http://localhost:5605/?room=${RUN}&relay=ws://127.0.0.1:5606`
 const b = await chromium.launch()
